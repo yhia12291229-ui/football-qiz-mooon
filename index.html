@@ -610,9 +610,10 @@ function readSettings(){
 
   state.p1.name = ($("p1In").value||"").trim() || "اللاعب 1";
   state.p2.name = ($("p2In").value||"").trim() || "اللاعب 2";
-}function wire(){
-  $("modeSel").onchange = syncModeUI;
 
+}
+function wire(){
+  $("modeSel").onchange = syncModeUI;
   $("howBtn").onclick = ()=> $("howBox").classList.toggle("hide");
   $("harderBtn").onclick = ()=> $("harderBox").classList.toggle("hide");
 
