@@ -652,9 +652,11 @@ function readSettings(){
 }
 wire();
 </script>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js"));
+  }
+</script>
 </body>
 </html>
-
-بعد الـ Commit:
-استنى دقيقة، وافتح موقعك واعمل Refresh.
-وجرب “تحدي بين اتنين” + “أسطوري” + “خليط” + 20 سؤال.
