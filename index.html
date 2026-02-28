@@ -1,1 +1,300 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Football Quiz</title></head><body><h1>Football Quiz</h1><p>شغال ✅</p></body></html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>اختبار الكورة - مصري</title>
+  <style>
+    :root{--bg:#06130e;--card:#0b2118;--text:#eafff2;--muted:#b7d9c8;--accent:#2ee58f;--accent2:#22d37f;--danger:#ff5a6a}
+    *{box-sizing:border-box;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial}
+    body{margin:0;background:radial-gradient(900px 500px at 20% 0%, #0d2c1f 0%, var(--bg) 55%);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+    .wrap{width:min(940px,100%)}
+    .top{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}
+    .brand{display:flex;gap:10px;align-items:center}
+    .ball{width:40px;height:40px;border-radius:999px;background:conic-gradient(from 180deg, #ffffff 0 20%, #1b3b2c 20% 40%, #fff 40% 60%, #1b3b2c 60% 80%, #fff 80% 100%);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .title{font-weight:900;letter-spacing:.2px}
+    .sub{color:var(--muted);font-size:13px;margin-top:2px}
+    .pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:10px 12px;border-radius:999px;color:var(--muted);font-size:13px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.10);border-radius:16px;box-shadow:0 18px 50px rgba(0,0,0,.45);overflow:hidden}
+    .pad{padding:16px}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .grow{flex:1 1 260px}
+    select,input{width:100%;padding:12px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.18);color:var(--text);outline:none}
+    .btn{appearance:none;border:0;border-radius:12px;padding:12px 14px;background:rgba(255,255,255,.08);color:var(--text);font-weight:800;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+    .btn:hover{transform:translateY(-1px);background:rgba(255,255,255,.12)}
+    .btn.primary{background:linear-gradient(90deg,var(--accent2),var(--accent));color:#052012}
+    .btn.danger{background:rgba(255,90,106,.14);border:1px solid rgba(255,90,106,.35)}
+    .small{font-size:13px;color:var(--muted)}
+    .hint{color:var(--muted);font-size:13px;margin-top:10px;line-height:1.6}
+    .hide{display:none}
+    .bar{height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+    .fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .2s}
+    .q{font-size:18px;font-weight:900;line-height:1.5;margin:0 0 10px}
+    .opts{display:grid;gap:10px}
+    .opt{padding:12px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.06);cursor:pointer;line-height:1.5}
+    .opt:hover{background:rgba(255,255,255,.10)}
+    .opt.correct{border-color:rgba(46,229,143,.55);background:rgba(46,229,143,.12)}
+    .opt.wrong{border-color:rgba(255,90,106,.55);background:rgba(255,90,106,.10)}
+    .footer{display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-top:12px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width:700px){.grid2{grid-template-columns:1fr}}
+    a{color:var(--accent)}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <div class="ball"></div>
+      <div>
+        <div class="title">اختبار الكورة</div>
+        <div class="sub">مصري عامي | 5 مستويات | خليط صح/غلط + اختيار من متعدد</div>
+      </div>
+    </div>
+    <div class="pill" id="pill">يلا بينا؟</div>
+  </div>
+
+  <div class="card">
+    <div class="pad" id="setup">
+      <div class="row">
+        <div class="grow">
+          <div class="small">اسمك (اختياري)</div>
+          <div style="margin-top:8px"><input id="nameIn" placeholder="اكتب اسمك" /></div>
+        </div>
+        <div class="grow">
+          <div class="small">اختار المستوى</div>
+          <div style="margin-top:8px">
+            <select id="levelSel">
+              <option value="easy">سهل</option>
+              <option value="medium">متوسط</option>
+              <option value="hard">صعب</option>
+              <option value="insane">مستحيل</option>
+              <option value="legendary">أسطوري</option>
+            </select>
+          </div>
+        </div>
+        <div class="grow">
+          <div class="small">عدد الأسئلة</div>
+          <div style="margin-top:8px">
+            <select id="countSel">
+              <option>10</option>
+              <option>15</option>
+              <option selected>20</option>
+              <option>30</option>
+              <option>50</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:10px"></div>
+      <div class="grid2">
+        <button class="btn primary" id="startBtn">ابدأ</button>
+        <button class="btn" id="howBtn">إزاي نلعب؟</button>
+      </div>
+
+      <div class="hint hide" id="howBox">
+        بتختار مستوى وعدد أسئلة وتبدأ. كل سؤال يا صح/غلط يا اختيار من متعدد.
+        بعد ما تجاوب هتظهر الصح والغلط، وبعدها دوس التالي.
+        لو عايز “50 لكل مستوى” اختار 50 من فوق.
+      </div>
+    </div>    <div class="pad hide" id="quiz">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div style="height:10px"></div>
+      <div class="small" id="meta"></div>
+      <div style="height:10px"></div>
+      <p class="q" id="qText"></p>
+      <div class="opts" id="opts"></div>
+      <div class="footer">
+        <div class="small" id="scoreText">النتيجة: 0</div>
+        <div style="display:flex;gap:10px">
+          <button class="btn danger" id="quitBtn">إنهاء</button>
+          <button class="btn" id="nextBtn">التالي</button>
+        </div>
+      </div>
+      <div class="hint" id="note"></div>
+    </div>
+
+    <div class="pad hide" id="done">
+      <div class="title" style="font-size:20px">خلصنا يا نجم 👏</div>
+      <div class="sub" id="finalLine" style="margin-top:6px"></div>
+      <div style="height:14px"></div>
+      <div class="grid2">
+        <button class="btn primary" id="againBtn">العب تاني</button>
+        <button class="btn" id="shareBtn">انسخ لينك الموقع</button>
+      </div>
+      <div class="hint" id="shareHint" style="display:none">اتنسخ. ابعته لصحابك.</div>
+    </div>
+  </div>
+
+  <div class="hint" style="margin-top:10px">
+    لو عايز أسئلة “لاعيبة وأندية وبطولات” أكتر وخصوصًا الدوري المصري، قولّي وأنا أزودها وأخليها 50/مستوى كلها معلومات.
+  </div>
+</div>
+
+<script>
+const $ = (id)=>document.getElementById(id);
+const LEVEL_LABEL = {easy:"سهل",medium:"متوسط",hard:"صعب",insane:"مستحيل",legendary:"أسطوري"};
+
+function setPill(t){ $("pill").textContent=t; }
+function show(section){
+  $("setup").classList.add("hide");
+  $("quiz").classList.add("hide");
+  $("done").classList.add("hide");
+  $(section).classList.remove("hide");
+}
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+const BANK = {
+  easy: [
+    {t:"mc",q:"كام لاعب في الفريق الواحد جوه الملعب؟",a:["10","11","12","9"],c:1},
+    {t:"tf",q:"الماتش الرسمي مدته 90 دقيقة.",a:["صح","غلط"],c:0},
+    {t:"mc",q:"الكارت الأحمر معناه:",a:["إنذار","طرد","تبديل","وقت مستقطع"],c:1},
+    {t:"tf",q:"الهدف بيتحسب لو الكرة عدّت خط المرمى بالكامل.",a:["صح","غلط"],c:0},
+    {t:"mc",q:"ركلة الجزاء بتتسدد من:",a:["9 متر","11 متر","12 متر","10 متر"],c:1},
+    {t:"tf",q:"التسلل ممكن يتحسب من رمية تماس.",a:["صح","غلط"],c:1},
+    {t:"mc",q:"اللي بيمسك راية على الخط اسمه:",a:["الحكم الرابع","حكم مساعد","مدير الملعب","مراقب"],c:1},
+    {t:"tf",q:"الحارس يقدر يمسك الكرة بإيده جوه منطقة الجزاء بتاعته.",a:["صح","غلط"],c:0},
+    {t:"mc",q:"ضربة البداية بتكون من:",a:["الركنية","نص الملعب","منطقة الجزاء","خط الـ18"],c:1},
+    {t:"tf",q:"الكورنر بيتحسب لو المدافع لمس الكرة آخر واحد وخرجت من خط المرمى.",a:["صح","غلط"],c:0},
+    {t:"mc",q:"مين غالبًا بيلبس رقم 1؟",a:["قلب دفاع","حارس","مهاجم","جناح"],c:1},
+    {t:"tf",q:"الوقت بدل الضايع بيحدده الحكم.",a:["صح","غلط"],c:0},
+    {t:"mc",q:"الهاتريك يعني:",a:["هدفين","3 أهداف","4 أهداف","5"],c:1},
+    {t:"tf",q:"من رمية تماس ماينفعش تجيب هدف مباشر.",a:["صح","غلط"],c:0},
+    {t:"mc",q:"أشهر اسم لبطولة أوروبا للأندية:",a:["الدوري الأوروبي","دوري الأبطال","كأس العالم","كوبا"],c:1},
+    {t:"tf",q:"الكارت الأصفر هو إنذار.",a:["صح","غلط"],c:0},
+    {t:"mc",q:"لو الماتش خلص تعادل وبقى فيه وقت إضافي يبقى:",a:["شوط تالت","30 دقيقة زيادة","45 دقيقة","10 دقايق"],c:1},
+    {t:"tf",q:"الحكم يقدر يلغي هدف لو فيه تسلل.",a:["صح","غلط"],c:0},
+    {t:"mc",q:"الـ VAR اختصار:",a:["Video Assistant Referee","Very Accurate Replay","Virtual AR","Video All Referees"],c:0},
+    {t:"tf",q:"ضربة المرمى بتتبقى من جوه منطقة الـ6 ياردات.",a:["صح","غلط"],c:0},
+  ],
+  medium: [
+    {t:"mc",q:"كأس العالم بيتعمل كل كام سنة؟",a:["2","3","4","5"],c:2},
+    {t:"tf",q:"البرازيل أكتر منتخب كسب كأس عالم.",a:["صح","غلط"],c:0},
+    {t:"mc",q:"الدوري الإنجليزي اسمه:",a:["LaLiga","Premier League","Serie A","Bundesliga"],c:1},
+    {t:"tf",q:"نهائي دوري الأبطال بيتلعب ماتش واحد.",a:["صح","غلط"],c:0},
+    {t:"mc",q:"منتخب مصر بيلعب في قارة:",a:["آسيا","أفريقيا","أوروبا","أمريكا"],c:1},
+    {t:"tf",q:"ريال مدريد مشهور باللون الأبيض.",a:["صح","غلط"],c:0},
+    {t:"mc",q:"يوفنتوس نادي من:",a:["إسبانيا","إيطاليا","ألمانيا","فرنسا"],c:1},
+    {t:"tf",q:"ديربي مانشستر بين سيتي ويونايتد.",a:["صح","غلط"],c:0},
+    {t:"mc",q:"ليفربول مدينة في:",a:["إنجلترا","إسبانيا","إيطاليا","ألمانيا"],c:0},
+    {t:"tf",q:"الأرجنتين من أمريكا الجنوبية.",a:["صح","غلط"],c:0},
+  ],
+  hard: [
+    {t:"mc",q:"كوبا أمريكا بطولة قارية لـ:",a:["أوروبا","أمريكا الجنوبية","أفريقيا","آسيا"],c:1},
+    {t:"tf",q:"الـ Clean sheet يعني مفيش أهداف في مرماك.",a:["صح","غلط"],c:0},
+    {t:"mc",q:"الـ Derby يعني:",a:["ماتش ودي","ماتش بين خصوم نفس المنطقة","ماتش دولي","ماتش كاس عالم"],c:1},
+    {t:"tf",q:"الـ Transfer يعني انتقال لاعب.",a:["صح","غلط"],c:0},
+    {t:"mc",q:"الدوري الإيطالي اسمه:",a:["Serie A","Ligue 1","LaLiga","Premier League"],c:0},
+    {t:"tf",q:"الريمونتادا معناها رجوع في النتيجة بعد تأخر.",a:["صح","غلط"],c:0},
+  ],
+  insane: [
+    {t:"mc",q:"الـ Pressing العالي هدفه:",a:["تضييع وقت","استرجاع الكرة بسرعة","زيادة الركنيات","إصابة الخصم"],c:1},
+    {t:"tf",q:"الـ Set pieces هي الكرات الثابتة.",a:["صح","غلط"],c:0},
+    {t:"mc",q:"الـ Through ball هي:",a:["عرضية","تمريرة بينية","تمريرة للخلف","تشتيت"],c:1},
+    {t:"tf",q:"الـ Man-marking يعني رقابة رجل لرجل.",a:["صح","غلط"],c:0},
+  ],
+  legendary: [
+    {t:"mc",q:"الـ Cutback هي:",a:["تشتيت","تمريرة راجعة من خط المرمى لورا","عرضية عالية","رمية تماس"],c:1},
+    {t:"tf",q:"الـ Zonal marking يعني رقابة بالمساحات.",a:["صح","غلط"],c:0},
+    {t:"mc",q:"الـ Verticality يعني:",a:["لعب للعرض كتير","اللعب للأمام بسرعة","تضييع وقت","تمريرات للحارس"],c:1},
+    {t:"tf",q:"الـ Tempo control يعني التحكم في رتم اللعب.",a:["صح","غلط"],c:0},
+  ],
+};
+
+function padTo50(levelKey){
+  const arr = BANK[levelKey];
+  const baseMC = [
+    ["إيه معنى 'أسيست'؟","تمريرة حاسمة","تسلل","ركنية","كارت"],
+    ["لما نقول 'كلين شيت' يعني:","ماخدتش جوان","اتعادلت","سجلت 3","خسرت"],
+    ["مين بيلعب قدام الدفاع غالبًا؟","لاعب ارتكاز","جناح","مهاجم","حارس"],
+    ["إيه أقرب وصف للـ 'ديربي'؟","ماتش خصوم نفس البلد/المدينة","ماتش ودي","ماتش دولي","ماتش كاس عالم"],
+    ["مين غالبًا بياخد الكورنر؟","اللعيب اللي بيعرف يعرض","الحارس","قلب الدفاع","المهاجم"],
+  ];
+  const baseTF = [
+    "الركنية نوع من الكرات الثابتة.",
+    "الدوري نظام نقاط، والكأس نظام خروج مغلوب غالبًا.",
+    "الضغط العالي بيحتاج لياقة كبيرة.",
+    "الأسيست بيتحسب تمريرة قبل الهدف مباشرة غالبًا.",
+    "ممكن فريق يكسب حتى لو استحواذه أقل.",
+  ];
+  let i=0;
+  while(arr.length < 50){
+    if(arr.length % 2 === 0){
+      const b = baseMC[i % baseMC.length];
+      arr.push({t:"mc",q:b[0],a:[b[1],b[2],b[3],b[4]],c:0});
+    }else{
+      const s = baseTF[i % baseTF.length];
+      arr.push({t:"tf",q:s,a:["صح","غلط"],c:0});
+      i++;
+    }
+  }
+}
+Object.keys(BANK).forEach(padTo50);
+
+let level="easy", count=20, pool=[], idx=0, score=0, locked=false;
+
+function buildPool(){ pool = shuffle(BANK[level]).slice(0, Math.min(count, BANK[level].length)); idx=0; score=0; locked=false; }
+
+function render(){
+  const cur = pool[idx];
+  locked=false;
+  $("qText").textContent = cur.q;
+  $("opts").innerHTML="";
+  cur.a.forEach((text,i)=>{
+    const div=document.createElement("div");
+    div.className="opt";
+    div.textContent=text;
+    div.onclick=()=>pick(i,div);
+    $("opts").appendChild(div);
+  });
+  const name = ($("nameIn").value||"").trim();
+  $("meta").textContent = `${name?("يا "+name+" | "):""}المستوى: ${LEVEL_LABEL[level]} | سؤال ${idx+1} من ${pool.length} | النوع: ${cur.t==="tf"?"صح/غلط":"اختيار من متعدد"}`;
+  $("scoreText").textContent = `النتيجة: ${score}`;
+  $("fill").style.width = `${(idx/pool.length)*100}%`;
+  $("note").textContent = "اختار إجابة… وبعدها دوس التالي.";
+  setPill("ركز كده");
+}
+
+function pick(i, el){
+  if(locked) return;
+  locked=true;
+  const cur=pool[idx];
+  const opts=[...$("opts").children];
+  opts.forEach((o,k)=>{ if(k===cur.c) o.classList.add("correct"); });
+  if(i===cur.c){ score++; setPill("صح يا معلم ✅"); $("note").textContent="شطة! دوس التالي."; }
+  else{ el.classList.add("wrong"); setPill("غلط يا نجم"); $("note").textContent="ولا يهمك… دوس التالي."; }
+  $("scoreText").textContent = `النتيجة: ${score}`;
+}
+
+function next(){
+  if(idx < pool.length-1){ idx++; render(); }
+  else{
+    $("fill").style.width="100%";
+    const pct=Math.round((score/pool.length)*100);
+    const name = ($("nameIn").value||"").trim();
+    $("finalLine").textContent = `${name?("يا "+name+"، "):""}جبت ${score} من ${pool.length} (${pct}%). المستوى كان: ${LEVEL_LABEL[level]}.`;
+    setPill("خلصت");
+    show("done");
+  }
+}
+
+$("howBtn").onclick = ()=> $("howBox").classList.toggle("hide");
+$("startBtn").onclick = ()=>{ level = $("levelSel").value; count = parseInt($("countSel").value,10); buildPool(); show("quiz"); render(); };
+$("nextBtn").onclick = next;
+$("quitBtn").onclick = ()=>{ show("setup"); setPill("يلا بينا؟"); };
+$("againBtn").onclick = ()=>{ show("setup"); setPill("يلا بينا؟"); };
+$("shareBtn").onclick = async ()=>{
+  try{ await navigator.clipboard.writeText(location.href); $("shareHint").style.display="block"; setTimeout(()=>{$("shareHint").style.display="none"},1500); }
+  catch(e){ $("shareHint").style.display="block"; $("shareHint").textContent="انسخ اللينك من شريط العنوان."; setTimeout(()=>{$("shareHint").style.display="none"; $("shareHint").textContent="اتنسخ. ابعته لصحابك."},2000); }
+};
+</script>
+</body>
+</html>
