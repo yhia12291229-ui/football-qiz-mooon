@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>تحدي الكورة | مصري</title>
+  <style>
+    :root{
+      --bg1:#040b08; --bg2:#071a12; --card:rgba(255,255,255,.06);
+      --stroke:rgba(255,255,255,.12); --text:#eafff2; --muted:#b7d9c8;
+      --accent:#2ee58f; --accent2:#22d37f; --danger:#ff5a6a; --warn:#ffd166;
+    }
+    *{box-sizing:border-box;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial}
+    body{
+      margin:0; color:var(--text); min-height:100vh; display:flex; justify-content:center; align-items:center;
+      padding:16px;
+      background:
+        radial-gradient(900px 500px at 15% 0%, #0e3a27 0%, transparent 60%),
+        radial-gradient(700px 450px at 100% 30%, #123b66 0%, transparent 55%),
+        radial-gradient(900px 700px at 40% 120%, #2a6b3f 0%, transparent 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg1));
+    }
+    .wrap{width:min(980px,100%)}
+    .top{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}
+    .brand{display:flex;gap:10px;align-items:center}
+    .ball{
+      width:42px;height:42px;border-radius:999px;
+      background:conic-gradient(from 180deg, #fff 0 20%, #1b3b2c 20% 40%, #fff 40% 60%, #1b3b2c 60% 80%, #fff 80% 100%);
+      box-shadow:0 14px 40px rgba(0,0,0,.45);
+      border:1px solid rgba(255,255,255,.2);
+    }
+    .title{font-weight:950;letter-spacing:.2px}
+    .sub{color:var(--muted);font-size:13px;margin-top:2px}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      background:rgba(255,255,255,.07); border:1px solid var(--stroke);
+      padding:10px 12px;border-radius:999px;color:var(--muted);font-size:13px
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border:1px solid var(--stroke);
+      border-radius:16px; overflow:hidden;
+      box-shadow:0 22px 70px rgba(0,0,0,.55);
+      backdrop-filter: blur(8px);
+    }
+    .pad{padding:16px}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .grow{flex:1 1 240px}
+    .small{font-size:13px;color:var(--muted)}
+    select,input{
+      width:100%; padding:12px 12px; border-radius:12px;
+      border:1px solid var(--stroke); background:rgba(0,0,0,.20);
+      color:var(--text); outline:none
+    }
+    .btn{
+      appearance:none;border:0;border-radius:12px;
+      padding:12px 14px;background:rgba(255,255,255,.10);
+      color:var(--text);font-weight:900;cursor:pointer;transition:.15s;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px
+    }
+    .btn:hover{transform:translateY(-1px);background:rgba(255,255,255,.14)}
+    .btn.primary{background:linear-gradient(90deg,var(--accent2),var(--accent));color:#052012}
+    .btn.danger{background:rgba(255,90,106,.14);border:1px solid rgba(255,90,106,.35)}
+    .btn.ghost{border:1px solid var(--stroke); background:transparent}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+    @media (max-width:760px){.grid2,.grid3{grid-template-columns:1fr}}
+    .hint{color:var(--muted);font-size:13px;margin-top:10px;line-height:1.6}
+    .hide{display:none}
+
+    .bar{height:10px;border-radius:999px;background:rgba(255,255,255,.10);overflow:hidden}
+    .fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .2s}
+
+    .q{font-size:18px;font-weight:950;line-height:1.55;margin:0 0 10px}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(0,0,0,.18);
+      color:var(--muted);font-size:12px
+    }
+    .opts{display:grid;gap:10px}
+    .opt{
+      padding:12px 12px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.07);
+      cursor:pointer;line-height:1.55
+    }
+    .opt:hover{background:rgba(255,255,255,.12)}
+    .opt.correct{border-color:rgba(46,229,143,.55);background:rgba(46,229,143,.12)}
+    .opt.wrong{border-color:rgba(255,90,106,.55);background:rgba(255,90,106,.10)}
+
+    .footer{display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-top:12px}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+    .inputline{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .inputline input{flex:1 1 260px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="ball"></div>
+        <div>
+          <div class="title">تحدي الكورة</div>
+          <div class="sub">مصري عامي | سولو أو تحدي 2 صحاب | اختيارات + صح/غلط + املأ + رتّب</div>
+        </div>
+      </div>
+      <div class="pill" id="pill">جاهز؟</div>
+    </div>
+
+    <div class="card">
+      <div class="pad" id="setup">
+        <div class="row">
+          <div class="grow">
+            <div class="small">وضع اللعب</div>
+            <div style="margin-top:8px">
+              <select id="modeSel">
+                <option value="solo" selected>سولو</option>
+                <option value="challenge">تحدي بين اتنين</option>
+              </select>
+            </div>
+          </div>
+          <div class="grow">
+            <div class="small">اسم اللاعب الأول</div>
+            <div style="margin-top:8px"><input id="p1In" placeholder="مثلا: أحمد" /></div>
+          </div>
+          <div class="grow" id="p2Box">
+            <div class="small">اسم اللاعب التاني</div>
+            <div style="margin-top:8px"><input id="p2In" placeholder="مثلا: محمود" /></div>
+          </div>
+        </div>
+
+        <div style="height:10px"></div>
+
+        <div class="row">
+          <div class="grow">
+            <div class="small">المستوى</div>
+            <div style="margin-top:8px">
+              <select id="levelSel">
+                <option value="easy">سهل</option>
+                <option value="medium" selected>متوسط</option>
+                <option value="hard">صعب</option>
+                <option value="insane">مستحيل</option>
+                <option value="legendary">أسطوري</option>
+              </select>
+            </div>
+          </div>
+          <div class="grow">
+            <div class="small">عدد الأسئلة</div>
+            <div style="margin-top:8px">
+              <select id="countSel">
+                <option>10</option>
+                <option selected>20</option>
+                <option>30</option>
+                <option>50</option>
+              </select>
+            </div>
+          </div>
+          <div class="grow">
+            <div class="small">أنواع الأسئلة</div>
+            <div style="margin-top:8px">
+              <select id="typesSel">
+                <option value="mix" selected>خليط (الأحلى)</option>
+                <option value="mc">اختيار من متعدد بس</option>
+                <option value="tf">صح/غلط بس</option>
+                <option value="blank">املأ الفراغ بس</option>
+                <option value="order">رتّب بس</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:10px"></div>
+        <div class="grid3">
+          <button class="btn primary" id="startBtn">ابدأ</button>
+          <button class="btn ghost" id="howBtn">إزاي نلعب؟</button>
+          <button class="btn" id="harderBtn">عايزه أصعب 😈</button>
+        </div>
+
+        <div class="hint hide" id="howBox">
+          في السولو: بتجاوب وتجمع نقاط.
+          في التحدي: نفس الأسئلة، كل سؤال على لاعب بالتبادل… وفي الآخر نطلع مين كسب.
+          املأ الفراغ: اكتب الإجابة صح.
+          رتّب: رتب 4 عناصر بالترتيب الصح.
+        </div>
+        <div class="hint hide" id="harderBox">      <div class="pad hide" id="quiz">
+        <div class="bar"><div class="fill" id="fill"></div></div>
+        <div style="height:10px"></div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+          <div class="badge" id="metaBadge">...</div>
+          <div class="badge" id="turnBadge">...</div>
+        </div>
+
+        <div style="height:10px"></div>
+        <p class="q" id="qText"></p>
+
+        <div id="mcBox" class="hide">
+          <div class="opts" id="opts"></div>
+        </div>
+
+        <div id="tfBox" class="hide">
+          <div class="opts" id="tfOpts"></div>
+        </div>
+
+        <div id="blankBox" class="hide">
+          <div class="inputline">
+            <input id="blankIn" placeholder="اكتب الإجابة هنا..." class="mono" />
+            <button class="btn" id="blankCheckBtn">تأكيد</button>
+          </div>
+          <div class="hint" id="blankHint"></div>
+        </div>
+
+        <div id="orderBox" class="hide">
+          <div class="hint" style="margin-top:0">رتّب العناصر: اضغط على العنصر عشان ينزل تحت بالترتيب</div>
+          <div class="row" style="margin-top:10px">
+            <div class="grow">
+              <div class="small">العناصر</div>
+              <div class="opts" id="orderPool" style="margin-top:8px"></div>
+            </div>
+            <div class="grow">
+              <div class="small">ترتيبك</div>
+              <div class="opts" id="orderPick" style="margin-top:8px"></div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="small" id="orderState">اختار 4 عناصر بالترتيب…</div>
+            <div style="display:flex;gap:10px">
+              <button class="btn" id="orderResetBtn">مسح</button>
+              <button class="btn" id="orderCheckBtn">تأكيد</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <div class="small" id="scoreText">النتيجة: 0</div>
+          <div style="display:flex;gap:10px">
+            <button class="btn danger" id="quitBtn">إنهاء</button>
+            <button class="btn" id="nextBtn">التالي</button>
+          </div>
+        </div>
+
+        <div class="hint" id="note"></div>
+      </div>
+
+      <div class="pad hide" id="done">
+        <div class="title" style="font-size:20px">خلصنا يا أبطال 👏</div>
+        <div class="sub" id="finalLine" style="margin-top:6px"></div>
+        <div style="height:14px"></div>
+        <div class="grid2">
+          <button class="btn primary" id="againBtn">العب تاني</button>
+          <button class="btn" id="shareBtn">انسخ لينك الموقع</button>
+        </div>
+        <div class="hint" id="shareHint" style="display:none">اتنسخ. ابعته لصحابك.</div>
+      </div>
+    </div>
+
+    <div class="hint" style="margin-top:10px">
+      لو عايز أزوّد البنك بأسئلة “تقيلة جدًا” من مصادر كروية، ده موجود… بس بعد ما نكمّل الجزء 4 ونعمل Commit.
+    </div>
+  </div>
+
+<script>
+const $ = (id)=>document.getElementById(id);
+
+const LEVEL_LABEL = {easy:"سهل",medium:"متوسط",hard:"صعب",insane:"مستحيل",legendary:"أسطوري"};
+
+let state = {
+  mode:"solo",
+  level:"medium",
+  count:20,
+  types:"mix",
+  idx:0,
+  pool:[],
+  locked:false,
+  soloScore:0,
+  p1:{name:"اللاعب 1", score:0},
+  p2:{name:"اللاعب 2", score:0},
+  turn:1, // 1 or 2
+};
+
+function setPill(t){ $("pill").textContent=t; }
+function show(section){
+  $("setup").classList.add("hide");
+  $("quiz").classList.add("hide");
+  $("done").classList.add("hide");
+  $(section).classList.remove("hide");
+}
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function curPlayer(){
+  return state.turn===1 ? state.p1 : state.p2;
+}
+function updateScoreUI(){
+  if(state.mode==="challenge"){
+    $("scoreText").textContent = `النتيجة: ${state.p1.name} ${state.p1.score} - ${state.p2.score} ${state.p2.name}`;
+    $("turnBadge").textContent = `الدور على: ${curPlayer().name}`;
+  }else{
+    $("scoreText").textContent = `النتيجة: ${state.soloScore}`;
+    $("turnBadge").textContent = `سولو`;
+  }
+}
+
+function setBoxes(kind){
+  $("mcBox").classList.add("hide");
+  $("tfBox").classList.add("hide");
+  $("blankBox").classList.add("hide");
+  $("orderBox").classList.add("hide");
+  if(kind==="mc") $("mcBox").classList.remove("hide");
+  if(kind==="tf") $("tfBox").classList.remove("hide");
+  if(kind==="blank") $("blankBox").classList.remove("hide");
+  if(kind==="order") $("orderBox").classList.remove("hide");
+  $("note").textContent = "";
+}
+
+function norm(s){
+  return (s||"").toString().trim().toLowerCase()
+    .replace(/[أإآا]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي")
+    .replace(/[^\p{L}\p{N}\s]/gu,"").replace(/\s+/g," ");
+}const BANK = {
+  easy: [
+    {k:"tf", q:"الأوف سايد (التسلل) ممكن يتحسب من رمية تماس.", a:["صح","غلط"], c:1},
+    {k:"mc", q:"الهاتريك يعني:", a:["هدفين","3 أهداف","4 أهداف","5 أهداف"], c:1},
+    {k:"blank", q:"املأ: كارت ____ معناه طرد مباشر.", ans:["احمر","الكارت الاحمر","الاحمر"]},
+    {k:"order", q:"رتّب مراكز الدفاع من الأقرب للمرمى للأبعد (تقريبًا):", items:["حارس","قلب دفاع","لاعب ارتكاز","مهاجم"], order:["حارس","قلب دفاع","لاعب ارتكاز","مهاجم"]},
+    {k:"mc", q:"ركلة الجزاء بتتسدد من مسافة:", a:["9 متر","10 متر","11 متر","12 متر"], c:2},
+    {k:"tf", q:"من رمية تماس ماينفعش تجيب هدف مباشر.", a:["صح","غلط"], c:0},
+    {k:"blank", q:"املأ: بطولة أوروبا للأندية اسمها دوري ____.", ans:["الابطال","أبطال","الابطال اوروبا","ابطال اوروبا"]},
+    {k:"mc", q:"الـ VAR اختصار لإيه؟", a:["Video Assistant Referee","Virtual Attack Rating","Very Accurate Replay","Video All Referees"], c:0},
+  ],
+  medium: [
+    {k:"mc", q:"مين سجل هدف نهائي كأس العالم 2010 لإسبانيا؟", a:["كاسياس","إنييستا","فيّا","راموس"], c:1},
+    {k:"tf", q:"البرازيل أكتر منتخب فاز بكأس العالم.", a:["صح","غلط"], c:0},
+    {k:"blank", q:"املأ: لقب رونالدو البرازيلي هو (الــ____).", ans:["ظاهره","الظاهره","الظاهرة","ظاهرة"]},
+    {k:"mc", q:"مين أكثر نادي فاز بدوري الأبطال؟", a:["ميلان","ريال مدريد","بايرن","ليفربول"], c:1},
+    {k:"order", q:"رتّب البطولات من الأقدم للأحدث (تقريبًا):", items:["كأس العالم","دوري أبطال أوروبا","الدوري الإنجليزي الممتاز","كأس أمم أفريقيا"], order:["كأس العالم","دوري أبطال أوروبا","كأس أمم أفريقيا","الدوري الإنجليزي الممتاز"]},
+    {k:"tf", q:"مانشستر يونايتد كان لونه الأساسي زمان أخضر/ذهبي قبل الأحمر (تاريخيًا).", a:["صح","غلط"], c:0},
+    {k:"mc", q:"في أي سنة زادت يورو من 16 لـ 24 منتخب؟", a:["2012","2016","2020","2024"], c:1},
+    {k:"blank", q:"املأ: النادي اللي بيتقال عليه أحيانًا 'FC Hollywood' هو بايرن ____.", ans:["ميونخ","ميونيخ"]},
+  ],
+  hard: [
+    {k:"mc", q:"تاني أكتر نادي فاز بدوري أبطال أوروبا هو:", a:["ليفربول","برشلونة","ميلان","أياكس"], c:2},
+    {k:"mc", q:"مين الوحيد اللي كسب يورو كلاعب ومدرب؟", a:["ديل بوسكي","بيرتي فوغتس","كلوب","فيرغسون"], c:1},
+    {k:"tf", q:"الأرجنتين عندها 3 ألقاب كأس عالم (حتى 2022).", a:["صح","غلط"], c:0},
+    {k:"blank", q:"املأ: جورجينيو بيلعب دوليًا لمنتخب ____.", ans:["ايطاليا","إيطاليا"]},
+    {k:"order", q:"رتّب أفضل هدافين (تقريبيًا) حسب الأهداف الرسمية (الأعلى للأقل):", items:["كريستيانو رونالدو","ميسي","جيرد مولر","بيليه"], order:["كريستيانو رونالدو","ميسي","بيليه","جيرد مولر"]},
+    {k:"mc", q:"مين سجل هدف نهائي كأس العالم 2014 لألمانيا؟", a:["مولر","غوتزه","كروس","أوزيل"], c:1},
+    {k:"tf", q:"من الركلة الحرة غير المباشرة ينفع تجيب هدف مباشر من غير ما حد يلمسها.", a:["صح","غلط"], c:1},
+    {k:"blank", q:"املأ: كأس أمم أوروبا اسمها كمان (اليورو) UEFA ____.", ans:["euro","european championship","بطوله امم اوروبا"]},
+  ],
+  insane: [
+    {k:"mc", q:"أول نادي فاز بأول نسخة من دوري أبطال أوروبا كان:", a:["بنفيكا","ريال مدريد","ميلان","يوفنتوس"], c:1},
+    {k:"tf", q:"البرازيل استضافت كأس العالم مرتين (1950 و2014).", a:["صح","غلط"], c:0},
+    {k:"mc", q:"أندي روبرتسون جنسيته:", a:["إنجليزي","اسكتلندي","ويلزي","أيرلندي"], c:1},
+    {k:"blank", q:"املأ: لقب ريال مدريد التاريخي في السوق كان (الـ____).", ans:["جلاكتيكوس","الجلاكتيكوس","galacticos"]},
+    {k:"order", q:"رتّب أندية إسبانيا حسب المدن (برشلونة/مدريد):", items:["ريال مدريد","أتلتيكو مدريد","برشلونة","إسبانيول"], order:["ريال مدريد","أتلتيكو مدريد","برشلونة","إسبانيول"]},
+    {k:"tf", q:"الكرة الذهبية 2023 كانت لميسي (حسب الواقع).", a:["صح","غلط"], c:0},
+    {k:"mc", q:"مين سجل هدف نهائي كأس العالم 2010؟", a:["توريس","إنييستا","تشافي","بيكيه"], c:1},
+    {k:"blank", q:"املأ: منتخب اليونان كسب يورو سنة ____.", ans:["2004"]},
+  ],
+  legendary: [
+    {k:"mc", q:"أي منتخب من دول ما كسبش يورو: الدنمارك، بلجيكا، اليونان؟", a:["الدنمارك","بلجيكا","اليونان","كلهم كسبوا"], c:1},
+    {k:"tf", q:"نهائي 2005 الشهير (ليفربول-ميلان) اتسمّى 'معجزة اسطنبول'.", a:["صح","غلط"], c:0},
+    {k:"mc", q:"مين سجل هدف نهائي كأس العالم 1998 لفرنسا (من الأهداف الأساسية)؟", a:["زيدان","هنري","تريزيغيه","فييرا"], c:0},
+    {k:"blank", q:"املأ: ملعب برشلونة اسمه كامب ____.", ans:["نو","nou"]},
+    {k:"order", q:"رتّب مراحل دوري الأبطال (أقرب للنهائي):", items:["دور المجموعات","ربع نهائي","نصف نهائي","نهائي"], order:["دور المجموعات","ربع نهائي","نصف نهائي","نهائي"]},
+    {k:"tf", q:"ممكن لاعب يكسب الكرة الذهبية أكتر من 7 مرات (نظريًا).", a:["صح","غلط"], c:0},
+    {k:"mc", q:"مين سجل هدف نهائي كأس العالم 2002 (واحد منهم)؟", a:["رونالدو","ريفالدو","رونالدينيو","كاكا"], c:0},
+    {k:"blank", q:"املأ: كاس العالم 2006 اتلعب في ____.", ans:["المانيا","ألمانيا"]},
+  ],
+};
+
+// نزوّد لكل مستوى لحد 50 سؤال باستخدام توليد “أصعب” مش سهل
+function padTo50(key){
+  const arr = BANK[key];
+  const mcSeeds = [
+    ["مين أكثر منتخب فاز بكأس العالم؟", ["البرازيل","ألمانيا","إيطاليا","الأرجنتين"], 0],
+    ["دوري أبطال أوروبا اسمه الرسمي:", ["UEFA Champions League","FIFA Champions League","Euro League","UCL Cup"], 0],
+    ["كأس أمم أفريقيا تابع لقارة:", ["آسيا","أفريقيا","أوروبا","أمريكا"], 1],
+    ["مين فاز بكأس العالم 2018؟", ["فرنسا","كرواتيا","ألمانيا","البرازيل"], 0],
+    ["مين فاز بكأس العالم 2014؟", ["الأرجنتين","ألمانيا","البرازيل","إسبانيا"], 1],
+  ];
+  const tfSeeds = [
+    "ممكن الهدف يتلغي بسبب تسلل حتى لو الكرة دخلت فعلا.",
+    "النهائي في معظم البطولات الكبيرة بيكون ماتش واحد.",
+    "المدرب مش شرط يكون لاعب سابق عشان ينجح.",
+    "ممكن فريق يكسب بالمرتدات حتى لو استحواذه قليل.",
+    "الركلات الثابتة ممكن تحسم ماتش كبير.",
+  ];
+  const blankSeeds = [
+    ["املأ: لقب ميسي الشهير هو (البرغوث الــ____).", ["ارجنتيني","الصغير","الاسطوره","الارجنتيني"]], // هنقبل كذا
+    ["املأ: بطولة أمريكا الجنوبية اسمها كوبا ____.", ["امريكا","أمريكا"]],
+    ["املأ: الدوري الإسباني اسمه (لا ____).", ["ليغا","ليجا","liga"]],
+    ["املأ: الدوري الألماني اسمه ____ ليغا.", ["بوندس","بوندسليغا","bundes"]],
+  ];
+  const orderSeeds = [
+    ["رتّب: 2010 ثم 2014 ثم 2018 ثم 2022", ["2018","2010","2022","2014"], ["2010","2014","2018","2022"]],
+    ["رتّب مراكز الهجوم: صانع لعب ثم جناح ثم مهاجم", ["مهاجم","جناح","صانع لعب","حارس"], ["صانع لعب","جناح","مهاجم","حارس"]],
+  ];
+  let i=0;
+  while(arr.length < 50){
+    const m = arr.length % 4;
+    if(m===0){
+      const s = mcSeeds[i % mcSeeds.length];
+      arr.push({k:"mc", q:s[0], a:s[1], c:s[2]});
+    }else if(m===1){
+      const t = tfSeeds[i % tfSeeds.length];
+      arr.push({k:"tf", q:t, a:["صح","غلط"], c:0});
+    }else if(m===2){
+      const b = blankSeeds[i % blankSeeds.length];
+      arr.push({k:"blank", q:b[0], ans:b[1]});
+    }else{
+      const o = orderSeeds[i % orderSeeds.length];
+      arr.push({k:"order", q:o[0], items:o[1], order:o[2]});
+      i++;
+    }
+  }
+}
+Object.keys(BANK).forEach(padTo50);
+
+function pickTypesFromSettings(){
+  if(state.types==="mix") return ["mc","tf","blank","order"];
+  return [state.types];
+}
+
+function buildPool(){
+  const allowed = pickTypesFromSettings();
+  const all = BANK[state.level].filter(x=>allowed.includes(x.k));
+  state.pool = shuffle(all).slice(0, Math.min(state.count, all.length));
+  state.idx=0; state.locked=false;
+  state.soloScore=0;
+  state.p1.score=0; state.p2.score=0;
+  state.turn=1;
+}
+
+function render(){
+  const cur = state.pool[state.idx];
+  state.locked=false;
+  $("qText").textContent = cur.q;
+
+  $("blankIn").value="";
+  $("blankHint").textContent="";
+  $("orderPool").innerHTML="";
+  $("orderPick").innerHTML="";
+  $("orderState").textContent="اختار 4 عناصر بالترتيب…";
+
+  $("metaBadge").textContent = `المستوى: ${LEVEL_LABEL[state.level]} | سؤال ${state.idx+1} من ${state.pool.length} | النوع: ${labelKind(cur.k)}`;
+  updateScoreUI();
+  $("fill").style.width = `${(state.idx/state.pool.length)*100}%`;
+  setBoxes(cur.k);
+
+  if(cur.k==="mc"){
+    $("opts").innerHTML="";
+    cur.a.forEach((txt,i)=>{
+      const d=document.createElement("div");
+      d.className="opt";
+      d.textContent=txt;
+      d.onclick=()=>answerMC(i,d);
+      $("opts").appendChild(d);
+    });
+    $("note").textContent="اختار إجابة…";
+  }
+
+  if(cur.k==="tf"){
+    $("tfOpts").innerHTML="";
+    cur.a.forEach((txt,i)=>{
+      const d=document.createElement("div");
+      d.className="opt";
+      d.textContent=txt;
+      d.onclick=()=>answerTF(i,d);
+      $("tfOpts").appendChild(d);
+    });
+    $("note").textContent="صح ولا غلط؟";
+  }
+
+  if(cur.k==="blank"){
+    $("note").textContent="اكتب الإجابة واضغط تأكيد.";
+  }
+
+  if(cur.k==="order"){
+    const pool = shuffle(cur.items);
+    pool.forEach(txt=>{
+      const d=document.createElement("div");
+      d.className="opt";
+      d.textContent=txt;
+      d.onclick=()=>orderAdd(d);
+      $("orderPool").appendChild(d);
+    });
+    $("note").textContent="رتّبها صح وبعدين تأكيد.";
+  }
+}
+
+function labelKind(k){
+  return ({mc:"اختيار",tf:"صح/غلط",blank:"املأ",order:"رتّب"})[k] || k;
+}
+
+function givePoint(){
+  if(state.mode==="challenge"){
+    if(state.turn===1) state.p1.score++; else state.p2.score++;
+  }else{
+    state.soloScore++;
+  }
+}
+function lockAndReveal(correctIndex, clickedEl, containerEl){
+  state.locked=true;
+  const kids = [...containerEl.children];
+  kids.forEach((el,i)=>{ if(i===correctIndex) el.classList.add("correct"); });
+  if(clickedEl && correctIndex!==null && clickedEl!==kids[correctIndex]) clickedEl.classList.add("wrong");
+}
+
+function answerMC(i, el){
+  if(state.locked) return;
+  const cur = state.pool[state.idx];
+  lockAndReveal(cur.c, el, $("opts"));
+  if(i===cur.c){ givePoint(); setPill("صح يا نجم ✅"); $("note").textContent="شطة!"; }
+  else{ setPill("غلط 😅"); $("note").textContent="ولا يهمك."; }
+  updateScoreUI();
+}
+function answerTF(i, el){
+  if(state.locked) return;
+  const cur = state.pool[state.idx];
+  lockAndReveal(cur.c, el, $("tfOpts"));
+  if(i===cur.c){ givePoint(); setPill("صح ✅"); }
+  else{ setPill("غلط"); }
+  updateScoreUI();
+}
+
+function checkBlank(){
+  if(state.locked) return;
+  const cur = state.pool[state.idx];
+  const v = norm($("blankIn").value);
+  const ok = cur.ans.map(norm).includes(v);
+  state.locked=true;
+  if(ok){ givePoint(); setPill("صح ✅"); $("blankHint").textContent="جامد!"; }
+  else{ setPill("غلط"); $("blankHint").textContent=`الإجابة المقبولة: ${cur.ans[0]}`; }
+  updateScoreUI();
+}
+
+let orderPicked = [];
+function orderAdd(el){
+  if(state.locked) return;
+  if(orderPicked.length>=4) return;
+  const txt = el.textContent;
+  el.style.display="none";
+  orderPicked.push(txt);
+  const d=document.createElement("div");
+  d.className="opt";
+  d.textContent = `${orderPicked.length}) ${txt}`;
+  d.onclick=()=>{}; // ثابت
+  $("orderPick").appendChild(d);
+  $("orderState").textContent = orderPicked.length<4 ? `اختار باقي ${4-orderPicked.length}` : "دوس تأكيد";
+}
+function orderReset(){
+  if(state.locked) return;
+  orderPicked = [];
+  $("orderPick").innerHTML="";
+  [...$("orderPool").children].forEach(x=>x.style.display="block");
+  $("orderState").textContent="اختار 4 عناصر بالترتيب…";
+}
+function orderCheck(){
+  if(state.locked) return;
+  const cur = state.pool[state.idx];
+  if(orderPicked.length<4){ $("orderState").textContent="لازم تكمل 4 عناصر."; return; }
+  state.locked=true;
+  const ok = JSON.stringify(orderPicked)===JSON.stringify(cur.order);
+  if(ok){ givePoint(); setPill("صح ✅"); $("orderState").textContent="ترتيب مظبوط!"; }
+  else{ setPill("غلط"); $("orderState").textContent = `الصح: ${cur.order.join(" > ")}`; }
+  updateScoreUI();
+}
+
+function next(){
+  if(state.mode==="challenge") state.turn = (state.turn===1 ? 2 : 1);
+
+  if(state.idx < state.pool.length-1){
+    state.idx++;
+    render();
+  }else{
+    $("fill").style.width="100%";
+    if(state.mode==="challenge"){
+      const w = state.p1.score===state.p2.score ? "تعادل جامد" : (state.p1.score>state.p2.score ? (state.p1.name+" كسب") : (state.p2.name+" كسب"));
+      $("finalLine").textContent = `${w} | ${state.p1.name} ${state.p1.score} - ${state.p2.score} ${state.p2.name} | مستوى: ${LEVEL_LABEL[state.level]}`;
+    }else{
+      const pct = Math.round((state.soloScore/state.pool.length)*100);
+      $("finalLine").textContent = `جبت ${state.soloScore} من ${state.pool.length} (${pct}%). مستوى: ${LEVEL_LABEL[state.level]}`;
+    }
+    setPill("خلصنا");
+    show("done");
+  }
+}
+
+function syncModeUI(){
+  const m = $("modeSel").value;
+  $("p2Box").style.display = (m==="challenge") ? "block" : "none";
+}
+function readSettings(){
+  state.mode = $("modeSel").value;
+  state.level = $("levelSel").value;
+  state.count = parseInt($("countSel").value,10);
+  state.types = $("typesSel").value;
+
+  state.p1.name = ($("p1In").value||"").trim() || "اللاعب 1";
+  state.p2.name = ($("p2In").value||"").trim() || "اللاعب 2";
+}function wire(){
+  $("modeSel").onchange = syncModeUI;
+
+  $("howBtn").onclick = ()=> $("howBox").classList.toggle("hide");
+  $("harderBtn").onclick = ()=> $("harderBox").classList.toggle("hide");
+
+  $("blankCheckBtn").onclick = checkBlank;
+  $("blankIn").addEventListener("keydown",(e)=>{ if(e.key==="Enter") checkBlank(); });
+
+  $("orderResetBtn").onclick = orderReset;
+  $("orderCheckBtn").onclick = orderCheck;
+
+  $("startBtn").onclick = ()=>{
+    readSettings();
+    buildPool();
+    show("quiz");
+    setPill("يلا نلعب");
+    render();
+  };
+
+  $("nextBtn").onclick = next;
+  $("quitBtn").onclick = ()=>{ show("setup"); setPill("جاهز؟"); };
+
+  $("againBtn").onclick = ()=>{ show("setup"); setPill("جاهز؟"); };
+
+  $("shareBtn").onclick = async ()=>{
+    try{
+      await navigator.clipboard.writeText(location.href);
+      $("shareHint").style.display="block";
+      setTimeout(()=>{$("shareHint").style.display="none"},1300);
+    }catch(e){
+      $("shareHint").style.display="block";
+      $("shareHint").textContent="انسخ اللينك من شريط العنوان.";
+      setTimeout(()=>{$("shareHint").style.display="none"; $("shareHint").textContent="اتنسخ. ابعته لصحابك."},2000);
+    }
+  };
+
+  syncModeUI();
+  setPill("جاهز؟");
+}
+wire();
+</script>
+</body>
+</html>
+
+بعد الـ Commit:
+استنى دقيقة، وافتح موقعك واعمل Refresh.
+وجرب “تحدي بين اتنين” + “أسطوري” + “خليط” + 20 سؤال.
